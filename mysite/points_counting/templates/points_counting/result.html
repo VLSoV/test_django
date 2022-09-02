@@ -1,0 +1,22 @@
+<h1>Result</h1>
+
+<div class="table_wrap">
+<table>
+    <thead>
+        <th>Payer</th>
+        <th>Points paid</th>
+        <th>Points left to pay</th>
+    </thead>
+    <tbody>
+
+        {% for res in result %}
+        <tr>
+            {% for el in res %}
+                <td>{{ el }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+</div>

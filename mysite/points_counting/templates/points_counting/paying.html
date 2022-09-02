@@ -1,0 +1,19 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'points_counting/styles.css' %}">
+    <title>Creating</title>
+</head>
+<body>
+    <form method="post" class="create_form">
+        {% csrf_token %}
+
+        {{ form }}<br>
+
+        <button type="submit" class="create_button">Pay!</button>
+    </form>
+</body>
+</html>

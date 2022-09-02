@@ -1,0 +1,30 @@
+<h1>Transactions</h1>
+
+<div class="table_wrap">
+<table>
+    <thead>
+        <th>Payer</th>
+        <th>Points</th>
+        <th>Date</th>
+    </thead>
+    <tbody>
+
+        {% for transaction in transactions %}
+        <tr>
+            <td>{{ transaction.payer_text }}</td>
+            <td>{{ transaction.points }}</td>
+            <td>{{ transaction.date }}</td>
+        </tr>
+        {% endfor %}
+
+
+<!--        {% for item in values %}-->
+<!--        <tr>-->
+<!--            {% for key, value in item.items %}-->
+<!--                <td>{{ value }}</td>-->
+<!--            {% endfor %}-->
+<!--        </tr>-->
+<!--        {% endfor %}-->
+    </tbody>
+</table>
+</div>

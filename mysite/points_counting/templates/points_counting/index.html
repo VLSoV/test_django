@@ -1,0 +1,30 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'points_counting/styles.css' %}">
+    <title>Points counting</title>
+</head>
+<body>
+    <div class="div_tables">
+        <div class="table_transactions">
+            {% include 'points_counting/list.html' %}
+            <br>
+<!--            <button class="delete_transaction" type="submit">Delete</button>-->
+            <a href="{% url 'create' %}"><button class="add_transaction" type="submit">Add</button></a>
+        </div>
+
+         <div class="table_result">
+            {% include 'points_counting/result.html' %}
+
+                 <br>
+                <!-- <input type="number" placeholder="Number" class="input_points">-->
+                 <a href="{% url 'paying' %}"><button class="pay" type="submit">Pay</button></a>
+         </div>
+    </div>
+
+    <h4 class="check_run">started {{start_count}} times</h4>
+</body>
+</html>
