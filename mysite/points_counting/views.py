@@ -1,35 +1,37 @@
 from django.shortcuts import render, redirect
-from .models import Transaction, PointsNumber
+from .models import Transaction, PointsNumber, Payer
 from .forms import TransactionForm, PointsNumberForm
-from django.views.generic import  DateDetailView
 
 global count
 count = 0
 
 
-def calculate(transactions, points_number):
-    paid = {}
-    left = {}
+def calculate(transactions, payers, points_number):
+    points_number_int = points_number.number
+    payers.update(left=0)
 
     for transaction in transactions:
-        if transaction.payer_text not in paid:
-            paid[transaction.payer_text] = 0
-            left[transaction.payer_text] = 0
+        payer = payers.filter(payer_text=transaction.payer_text).last()
+        if payer is None:
+            payers.create(payer_text=transaction.payer_text, paid=0, left=0)
+            payer = payers.filter(payer_text=transaction.payer_text).last()
 
-        if transaction.points <= points_number:
-            paid[transaction.payer_text] += transaction.points
-            points_number -= transaction.points
+        if transaction.points <= points_number_int:
+            payer.paid += transaction.points
+            points_number_int -= transaction.points
+            transaction.delete()
         else:
-            paid[transaction.payer_text] += points_number
-            left[transaction.payer_text] += transaction.points - points_number
-            points_number = 0
+            payer.paid += points_number_int
+            payer.left += transaction.points - points_number_int
+            transaction.points -= points_number_int
+            transaction.save()
+            points_number_int = 0
 
-    result = []
+        payer.save()
 
-    for payer in paid.keys():
-        result.append((payer, paid[payer], left[payer]))
-
-    return result
+    transactions.update()
+    if points_number_int == 0:
+        points_number.delete()
 
 
 def index(request):
@@ -37,12 +39,15 @@ def index(request):
     count += 1
 
     transactions = Transaction.objects.order_by('date')
-    points_number = PointsNumber.objects.last().number
-    result = calculate(transactions, points_number)
+    payers = Payer.objects.all()
+
+    points_number = PointsNumber.objects.last()
+    if points_number is not None:
+        calculate(transactions, payers, points_number)
 
     data = {
         'transactions': transactions,
-        'result': result,
+        'payers': payers,
         'start_count': count,
     }
     return render(request, 'points_counting/index.html', data)

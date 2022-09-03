@@ -9,11 +9,11 @@
     </thead>
     <tbody>
 
-        {% for res in result %}
+        {% for payer in payers %}
         <tr>
-            {% for el in res %}
-                <td>{{ el }}</td>
-            {% endfor %}
+            <td>{{ payer.payer_text }}</td>
+            <td>{{ payer.paid }}</td>
+            <td>{{ payer.left }}</td>
         </tr>
         {% endfor %}
 

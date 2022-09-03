@@ -16,7 +16,7 @@ class TransactionForm(ModelForm):
             }),
             'date': DateTimeInput(attrs={
                 'class': 'form-control',
-                'type': 'date',
+                'type': 'datetime-local',
         })
         }
 

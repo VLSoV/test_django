@@ -15,3 +15,12 @@ class PointsNumber(models.Model):
 
     def __str__(self):
         return str(self.number)
+
+
+class Payer(models.Model):
+    payer_text = models.CharField('payer name', max_length=50)
+    paid = models.IntegerField('points paid')
+    left = models.IntegerField('points left to pay')
+
+    def __str__(self):
+        return self.payer_text
