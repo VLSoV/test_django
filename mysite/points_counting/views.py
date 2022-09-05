@@ -7,6 +7,7 @@ count = 0
 
 
 def calculate(transactions, payers, points_number):
+    transactions = transactions.order_by('date')
     points_number_int = points_number.number
     payers.update(left=0)
 
@@ -38,7 +39,7 @@ def index(request):
     global count
     count += 1
 
-    transactions = Transaction.objects.order_by('date')
+    transactions = Transaction.objects.all()
     payers = Payer.objects.all()
 
     points_number = PointsNumber.objects.last()
